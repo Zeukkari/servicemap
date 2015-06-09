@@ -1,4 +1,4 @@
-define [
+define 'app/views/language-selector', [
     'underscore',
     'app/models',
     'app/views/base',

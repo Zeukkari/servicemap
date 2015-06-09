@@ -1,4 +1,4 @@
-define [
+define 'app/animations', [
     'TweenLite'
 ], (
     TweenLite

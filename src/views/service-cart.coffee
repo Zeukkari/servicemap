@@ -1,4 +1,4 @@
-define [
+define 'app/views/service-cart', [
     'underscore',
     'app/p13n',
     'app/views/base',

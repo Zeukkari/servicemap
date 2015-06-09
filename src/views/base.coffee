@@ -1,4 +1,4 @@
-define [
+define 'app/views/base', [
     'backbone.marionette',
     'app/jade',
     'app/base'

@@ -1,4 +1,4 @@
-define [
+define 'app/views/search-input', [
     'typeahead.bundle',
     'app/models',
     'app/jade',

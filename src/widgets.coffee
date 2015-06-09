@@ -1,4 +1,4 @@
-define [
+define 'app/widgets', [
     'app/draw',
     'leaflet',
     'leaflet.markercluster',

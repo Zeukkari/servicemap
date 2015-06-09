@@ -1,4 +1,4 @@
-define ->
+define 'app/transit-map', ->
 
     # Original structure from:
     # https://github.com/reitti/reittiopas/blob/90a4d5f20bed3868b5fb608ee1a1c7ce77b70ed8/web/js/utils.coffee

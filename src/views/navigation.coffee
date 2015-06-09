@@ -1,4 +1,4 @@
-define [
+define 'app/views/navigation', [
     'app/views/base',
     'app/views/event-details',
     'app/views/service-tree',

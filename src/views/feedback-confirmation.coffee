@@ -1,4 +1,4 @@
-define [
+define 'app/views/feedback-confirmation', [
     'app/views/base',
 ], (
     base,

@@ -1,4 +1,4 @@
-define [
+define 'app/views/feature-tour-start', [
     'app/views/base',
     'app/tour'
 ],

@@ -1,4 +1,4 @@
-define [
+define 'app/views/event-details', [
     'app/dateformat',
     'app/views/base',
 ], (

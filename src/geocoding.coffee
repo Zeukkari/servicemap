@@ -1,4 +1,4 @@
-define [
+define 'app/geocoding', [
     'app/base',
     'app/p13n',
     'app/settings',

@@ -1,4 +1,4 @@
-define [
+define 'app/jade', [
     'underscore',
     'jquery',
     'i18next',

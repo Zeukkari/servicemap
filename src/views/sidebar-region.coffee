@@ -1,5 +1,4 @@
-
-define [
+define 'app/views/sidebar-region', [
     'underscore',
     'backbone.marionette',
     'app/jade',

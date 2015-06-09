@@ -16,7 +16,7 @@ p13nDeps = [
     'i18next',
     'moment'].concat momentDeps
 
-define p13nDeps, (
+define 'app/p13n', p13nDeps, (
     models,
     _,
     Backbone,

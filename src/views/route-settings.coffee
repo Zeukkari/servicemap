@@ -1,4 +1,4 @@
-define [
+define 'app/views/route-settings', [
     'underscore',
     'moment',
     'bootstrap-datetimepicker',

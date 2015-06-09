@@ -1,5 +1,4 @@
-define \
-[
+define 'app/map-state-model', [
     'leaflet',
     'backbone',
     'app/map'

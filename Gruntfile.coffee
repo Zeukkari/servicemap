@@ -77,15 +77,35 @@ module.exports = (grunt) ->
     grunt.initConfig
         pkg: '<json:package.json>'
         coffee:
-            client:
+            coffee2css:
                 options:
                     sourceMap: true
-                expand: true
-                cwd: 'src'
-                flatten: false
-                src: ['*.coffee', 'views/*.coffee']
-                dest: 'static/js/'
-                ext: '.js'
+                files:
+                    'static/js/color.js' : 'src/color.coffee'
+            home:
+                options:
+                    sourceMap: true
+                    join : true
+                    bare : false
+                files:
+                  'static/js/app.js': [
+                    'src/*.coffee',
+                    'src/views/*.coffee',
+                    '!src/color.coffee',
+                    '!src/embed.coffee'
+                  ]
+            embed:
+                options:
+                    sourceMap: true
+                    join : true
+                    bare : false
+                files:
+                  'static/js/embed.js': [
+                    'src/*.coffee',
+                    'src/views/*.coffee',
+                    '!src/color.coffee',
+                    '!src/app.coffee'
+                  ]
             server:
                 expand: true
                 cwd: 'server-src'

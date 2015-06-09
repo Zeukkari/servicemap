@@ -1,4 +1,4 @@
-define [
+define 'app/views/service-map-disclaimers', [
     'i18next',
     'app/views/base'
 ],

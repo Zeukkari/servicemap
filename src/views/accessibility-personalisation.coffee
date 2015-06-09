@@ -1,4 +1,4 @@
-define [
+define 'app/views/accessibility-personalisation', [
     'app/views/base',
 ], (
     base

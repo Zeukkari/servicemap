@@ -1,4 +1,4 @@
-define ->
+define 'app/draw', ->
 
     class CanvasDrawer
         referenceLength: 4500

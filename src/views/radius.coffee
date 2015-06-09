@@ -1,4 +1,4 @@
-define [
+define 'app/views/radius', [
     'app/views/base',
 ], (
     base,

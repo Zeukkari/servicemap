@@ -1,4 +1,4 @@
-define [
+define 'app/views/unit-details', [
     'i18next',
     'harvey',
     'app/p13n',

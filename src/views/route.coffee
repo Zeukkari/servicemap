@@ -1,4 +1,4 @@
-define [
+define 'app/views/route', [
     'underscore',
     'moment',
     'i18next',

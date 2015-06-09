@@ -1,4 +1,4 @@
-define ->
+define 'app/base', ->
     mixOf: (base, mixins...) ->
         class Mixed extends base
             for mixin in mixins by -1 # earlier mixins override later ones

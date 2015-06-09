@@ -1,4 +1,4 @@
-define [
+define 'app/map-base-view', [
     'backbone',
     'backbone.marionette',
     'i18next',

@@ -1,5 +1,4 @@
-
-define ->
+define 'app/color', ->
 
     class ColorMatcher
         @serviceColors:

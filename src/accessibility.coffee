@@ -1,6 +1,6 @@
 "use strict"
 
-define [
+define 'app/accessibility', [
     'underscore',
     'backbone'
 ], (

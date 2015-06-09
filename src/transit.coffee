@@ -1,4 +1,4 @@
-define [
+define 'app/transit', [
     'backbone',
     'leaflet'
 ], (

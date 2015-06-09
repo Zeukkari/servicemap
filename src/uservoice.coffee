@@ -1,4 +1,4 @@
-define ->
+define 'app/uservoice', ->
     # Include the UserVoice JavaScript SDK (only needed once on a page)
     init = (locale) ->
         if locale == 'sv'

@@ -1,4 +1,4 @@
-define [
+define 'app/tour', [
     'bootstrap-tour',
     'i18next',
     'app/jade',

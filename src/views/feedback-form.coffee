@@ -1,4 +1,4 @@
-define [
+define 'app/views/feedback-form', [
     'underscore',
     'app/views/base',
     'app/views/accessibility-personalisation',

@@ -1,4 +1,4 @@
-define [
+define 'app/map-view', [
     'leaflet',
     'leaflet.snogylop',
     'backbone',

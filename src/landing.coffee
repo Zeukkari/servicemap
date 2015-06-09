@@ -1,4 +1,4 @@
-define ->
+define 'app/landing', ->
 
     clearLandingPage = ->
         # The transitions triggered by removing the class landing from body are defined

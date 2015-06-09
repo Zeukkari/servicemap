@@ -1,5 +1,5 @@
 
-define [
+define 'app/router', [
     'app/models',
     'app/spinner',
     'app/embedded-views',

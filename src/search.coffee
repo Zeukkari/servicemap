@@ -1,4 +1,4 @@
-define [
+define 'app/search', [
     'backbone',
     'typeahead.bundle',
     'app/p13n',

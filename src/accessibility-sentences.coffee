@@ -1,4 +1,4 @@
-define [
+define 'app/accessibility-sentences', [
     'underscore',
     'raven',
     'backbone',

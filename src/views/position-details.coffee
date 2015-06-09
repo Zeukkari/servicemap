@@ -1,4 +1,4 @@
-define [
+define 'app/views/position-details', [
     'underscore',
     'app/models',
     'app/map-view',

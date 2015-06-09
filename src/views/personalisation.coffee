@@ -1,4 +1,4 @@
-define [
+define 'app/views/personalisation', [
     'app/p13n',
     'app/views/base',
     'app/views/accessibility-personalisation'

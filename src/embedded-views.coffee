@@ -1,4 +1,4 @@
-define [
+define 'app/embedded-views', [
     'app/views/base',
     'backbone'
 ], (

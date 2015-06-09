@@ -1,4 +1,4 @@
-define [
+define 'app/views/service-tree', [
     'underscore',
     'i18next',
     'app/models'

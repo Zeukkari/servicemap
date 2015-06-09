@@ -1,4 +1,4 @@
-define [
+define 'app/views/accessibility', [
     'underscore',
     'i18next',
     'moment',

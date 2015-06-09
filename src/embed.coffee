@@ -1,3 +1,5 @@
+# Define how?
+
 requirejsConfig =
     baseUrl: appSettings.static_path + 'vendor'
     paths:

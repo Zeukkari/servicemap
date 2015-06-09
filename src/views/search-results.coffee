@@ -1,4 +1,4 @@
-define [
+define 'app/views/search-results', [
     'underscore',
     'i18next',
     'app/models',

@@ -1,4 +1,4 @@
-define [
+define 'app/map', [
     'leaflet',
     'proj4leaflet',
     'underscore',

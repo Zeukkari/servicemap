@@ -1,4 +1,4 @@
-define [
+define 'app/views/title', [
     'app/p13n',
     'app/jade',
     'app/views/base',
