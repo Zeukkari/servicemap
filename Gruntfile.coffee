@@ -82,30 +82,15 @@ module.exports = (grunt) ->
                     sourceMap: true
                 files:
                     'static/js/color.js' : 'src/color.coffee'
-            home:
+            client:
                 options:
                     sourceMap: true
-                    join : true
-                    bare : false
-                files:
-                  'static/js/app.js': [
-                    'src/*.coffee',
-                    'src/views/*.coffee',
-                    '!src/color.coffee',
-                    '!src/embed.coffee'
-                  ]
-            embed:
-                options:
-                    sourceMap: true
-                    join : true
-                    bare : false
-                files:
-                  'static/js/embed.js': [
-                    'src/*.coffee',
-                    'src/views/*.coffee',
-                    '!src/color.coffee',
-                    '!src/app.coffee'
-                  ]
+                expand: true
+                cwd: 'src'
+                flatten: false
+                src: ['*.coffee', 'views/*.coffee', '!color.coffee']
+                dest: 'static/js-src/'
+                ext: '.js'
             server:
                 expand: true
                 cwd: 'server-src'
@@ -118,6 +103,27 @@ module.exports = (grunt) ->
                 src: ['*.coffee']
                 dest: 'tasks/'
                 ext: '.js'
+        concat_sourcemap:
+            home:
+                options:
+                    sourcesContent : true
+                files:
+                  'static/js/home.js': [
+                    'static/js-src/*.js',
+                    'static/js-src/views/*.js',
+                    '!static/js-src/embed.js',
+                    '!static/js-src/home.js'
+                  ]
+            embed:
+                options:
+                    sourcesContent : true
+                files:
+                  'static/js/embed.js': [
+                    'static/js-src/*.js',
+                    'static/js-src/views/*.js',
+                    '!static/js-src/home.js',
+                    '!static/js-src/app.js'
+                  ]
         less:
             main:
                 options:
@@ -174,7 +180,16 @@ module.exports = (grunt) ->
                     'src/*.coffee',
                     'src/views/*.coffee'
                 ]
-                tasks: ['newer:coffee:home', 'newer:coffee:embed']
+                tasks: ['newer:coffee:client', 'newer:coffee:coffee2css']
+            'sourcemaps':
+                files: [
+                    'static/js-src/*.js',
+                    'static/js-src/views/*.js'
+                ]
+                tasks: [
+                    'newer:concat_sourcemap:home',
+                    'newer:concat_sourcemap:embed'
+                ]
             coffee2css:
                 files: [
                     'Gruntfile.coffee'
@@ -210,6 +225,7 @@ module.exports = (grunt) ->
                     script: 'server-js/dev.js'
 
     grunt.loadNpmTasks 'grunt-contrib-coffee'
+    grunt.loadNpmTasks 'grunt-concat-sourcemap'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-contrib-less'
     grunt.loadNpmTasks 'grunt-contrib-jade'
@@ -219,6 +235,13 @@ module.exports = (grunt) ->
 
     loadLocalTasks()
 
-    grunt.registerTask 'default', ['newer:coffee', 'newer:less', 'newer:i18next-yaml', 'newer:jade', 'newer:coffee2css']
+    grunt.registerTask 'default', [
+        'newer:coffee',
+        'newer:concat_sourcemap',
+        'newer:less',
+        'newer:i18next-yaml',
+        'newer:jade',
+        'newer:coffee2css'
+    ]
     grunt.registerTask 'server', ['default', 'express', 'watch']
     grunt.registerTask 'tasks', ['coffee:tasks']
