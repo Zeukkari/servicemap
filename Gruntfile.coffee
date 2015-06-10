@@ -174,7 +174,7 @@ module.exports = (grunt) ->
                     'src/*.coffee',
                     'src/views/*.coffee'
                 ]
-                tasks: 'newer:coffee:client'
+                tasks: ['newer:coffee:home', 'newer:coffee:embed']
             coffee2css:
                 files: [
                     'Gruntfile.coffee'
