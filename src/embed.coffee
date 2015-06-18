@@ -1,22 +1,3 @@
-# Define how?
-
-requirejsConfig =
-    baseUrl: appSettings.static_path + 'vendor'
-    paths:
-        app: '../js'
-    shim:
-        bootstrap:
-            deps: ['jquery']
-        backbone:
-            deps: ['underscore', 'jquery']
-            exports: 'Backbone'
-        'leaflet.markercluster':
-            deps: ['leaflet']
-        'iexhr':
-            deps: ['jquery']
-
-requirejs.config requirejsConfig
-
 PAGE_SIZE = 1000
 
 # TODO: move to common file??

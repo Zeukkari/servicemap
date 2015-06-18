@@ -44,7 +44,7 @@ module.exports = (grunt) ->
         requirejs.config
             baseUrl: __dirname
             paths:
-                app: 'static/js'
+                app: "static/app"
             nodeRequire: require
 
         cssTemplate = """
@@ -76,20 +76,40 @@ module.exports = (grunt) ->
 
     grunt.initConfig
         pkg: '<json:package.json>'
+        copy:
+            libs:
+                files: [ {
+                    expand: true
+                    dot: true
+                    cwd: 'lib'
+                    dest: 'static'
+                    src: 'vendor/**'
+                } ]
+            fonts:
+                files: [ {
+                    expand: true
+                    dot: true
+                    cwd: 'lib'
+                    dest: 'static'
+                    src: 'fonts/*'
+                } ]
+            media:
+                files: [ {
+                    expand: true
+                    dot: true
+                    cwd: 'lib'
+                    dest: 'static'
+                    src: 'images/**'
+                } ]
         coffee:
-            coffee2css:
-                options:
-                    sourceMap: true
-                files:
-                    'static/js/color.js' : 'src/color.coffee'
             client:
                 options:
                     sourceMap: true
                 expand: true
                 cwd: 'src'
                 flatten: false
-                src: ['*.coffee', 'views/*.coffee', '!color.coffee']
-                dest: 'static/js-src/'
+                src: ['*.coffee', 'app/*.coffee', 'app/views/*.coffee']
+                dest: 'static/'
                 ext: '.js'
             server:
                 expand: true
@@ -103,27 +123,43 @@ module.exports = (grunt) ->
                 src: ['*.coffee']
                 dest: 'tasks/'
                 ext: '.js'
-        concat_sourcemap:
-            home:
+        requirejs:
+            options:
+                appDir: 'static'
+                dir: 'static'
+                mainConfigFile: 'static/common.js'
+                optimize: 'none'
+                normalizeDirDefines: 'skip'
+                skipDirOptimize: true
+                wrapShim: true
+                keepBuildDir: true
+                allowSourceOverwrites: true
+                generateSourceMaps: true
+            build:
                 options:
-                    sourcesContent : true
-                files:
-                  'static/js/home.js': [
-                    'static/js-src/*.js',
-                    'static/js-src/views/*.js',
-                    '!static/js-src/embed.js',
-                    '!static/js-src/home.js'
-                  ]
-            embed:
+                    deps: ['leaflet']
+                    modules: [{
+                        name: 'app'
+                        include: [
+                            'moment/fi',
+                            'moment/sv',
+                            'moment/en-gb',
+                            'leaflet'
+                        ]
+                    }]
+            'embed-build':
                 options:
-                    sourcesContent : true
-                files:
-                  'static/js/embed.js': [
-                    'static/js-src/*.js',
-                    'static/js-src/views/*.js',
-                    '!static/js-src/home.js',
-                    '!static/js-src/app.js'
-                  ]
+                    deps: ['leaflet']
+                    modules: [{
+                        name: 'embed'
+                        include: [
+                            'moment/fi',
+                            'moment/sv',
+                            'moment/en-gb',
+                            'leaflet'
+                        ]
+                    }]
+
         less:
             main:
                 options:
@@ -162,9 +198,10 @@ module.exports = (grunt) ->
         coffee2css:
             color_mapping:
                 options:
+                    cwd: 'src'
                     output: 'static/css/colors.css'
                 files:
-                    'static/css/colors.css': 'src/color.coffee'
+                    'static/css/colors.css': 'src/app/color.coffee'
         watch:
             express:
                 files: [
@@ -180,22 +217,13 @@ module.exports = (grunt) ->
                     'src/*.coffee',
                     'src/views/*.coffee'
                 ]
-                tasks: ['newer:coffee:client', 'newer:coffee:coffee2css']
-            'sourcemaps':
-                files: [
-                    'static/js-src/*.js',
-                    'static/js-src/views/*.js'
-                ]
-                tasks: [
-                    'newer:concat_sourcemap:home',
-                    'newer:concat_sourcemap:embed'
-                ]
+                tasks: ['newer:coffee:client']
             coffee2css:
                 files: [
                     'Gruntfile.coffee'
-                    'src/color.coffee'
+                    'src/app/color.coffee'
                 ]
-                tasks: 'coffee2css'
+                tasks: 'newer:coffee2css'
             less:
                 files: [
                     'styles/**/*.less'
@@ -205,12 +233,12 @@ module.exports = (grunt) ->
                 files: [
                     'locales/*.yaml'
                 ]
-                tasks: 'i18next-yaml'
+                tasks: 'newer:i18next-yaml'
             jade:
                 files: [
                     'views/templates/**/*.jade'
                 ]
-                tasks: 'jade'
+                tasks: 'newer:jade'
             livereload:
                 options:
                     livereload: true
@@ -224,24 +252,29 @@ module.exports = (grunt) ->
                 options:
                     script: 'server-js/dev.js'
 
+
+    grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
-    grunt.loadNpmTasks 'grunt-concat-sourcemap'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-contrib-less'
     grunt.loadNpmTasks 'grunt-contrib-jade'
     grunt.loadNpmTasks 'grunt-express-server'
     grunt.loadNpmTasks 'grunt-i18next-yaml'
+    grunt.loadNpmTasks 'grunt-contrib-requirejs'
     grunt.loadNpmTasks 'grunt-newer'
 
     loadLocalTasks()
 
     grunt.registerTask 'default', [
-        'newer:coffee',
-        'newer:concat_sourcemap',
-        'newer:less',
-        'newer:i18next-yaml',
-        'newer:jade',
-        'newer:coffee2css'
+        'copy:libs',
+        'coffee',
+        'coffee2css',
+        'requirejs',
+        'less',
+        'i18next-yaml',
+        'copy:fonts',
+        'copy:media',
+        'jade',
     ]
     grunt.registerTask 'server', ['default', 'express', 'watch']
     grunt.registerTask 'tasks', ['coffee:tasks']
