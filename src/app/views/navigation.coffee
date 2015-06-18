@@ -49,12 +49,8 @@ define 'app/views/navigation', [
             @openViewType = null # initially the sidebar is closed.
             @addListeners()
         addListeners: ->
-            @listenTo @searchResults, 'reset', ->
-                unless @searchResults.isEmpty()
-                    @change 'search'
             @listenTo @searchResults, 'ready', ->
-                unless @searchResults.isEmpty()
-                    @change 'search'
+                @change 'search'
             @listenTo @serviceTreeCollection, 'finished', ->
                 @openViewType = null
                 @change 'browse'
@@ -69,7 +65,7 @@ define 'app/views/navigation', [
                     @listenTo value, 'change:radiusFilter', @radiusFilterChanged
                 if @selectedPosition.isSet()
                     @change 'position'
-                else if @openViewType = 'position'
+                else if @openViewType == 'position'
                     @closeContents()
             @listenTo @selectedServices, 'add', (service) ->
                 @closeContents()
@@ -78,7 +74,8 @@ define 'app/views/navigation', [
                     @change 'service-units'
             @listenTo @selectedServices, 'remove', (service, coll) =>
                 if coll.isEmpty()
-                    @closeContents()
+                    if @openViewType == 'service-units'
+                        @closeContents()
                 else
                     @change 'service-units'
             @listenTo @selectedUnits, 'reset', (unit, coll, opts) ->
@@ -224,11 +221,6 @@ define 'app/views/navigation', [
             @searchState = options.searchState
             @searchResults = options.searchResults
             @selectedUnits = options.selectedUnits
-            @listenTo @searchState, 'change:input_query', (model, value, opts) =>
-                if opts.initial
-                    @_open 'search'
-                else unless value or opts.clearing or opts.keepOpen
-                    @_close 'search'
         onShow: ->
             searchInputView = new SearchInputView(@searchState, @searchResults)
             @search.show searchInputView

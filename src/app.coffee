@@ -96,7 +96,6 @@ requirejs [
             @selectedEvents = appModels.selectedEvents
             @selectedDivision = appModels.selectedDivision
             @searchResults = appModels.searchResults
-            @searchState = appModels.searchState
             @route = appModels.route
 
             @_resetPendingFeedback appModels.pendingFeedback
@@ -148,7 +147,6 @@ requirejs [
             @units.reset []
             @services.reset [], silent: true
             @selectedEvents.reset []
-            @searchState.clear silent: true
             @_resetSearchResults()
 
         isStateEmpty: () ->
@@ -446,11 +444,6 @@ requirejs [
             @_clearRadius()
             @selectedPosition.clear()
             @clearUnits all: true
-            @searchState.set 'input_query', query,
-                initial: true
-            @searchState.trigger 'change', @searchState,
-                initial: true
-
             if @searchResults.query == query
                 @searchResults.trigger 'ready'
                 return
@@ -480,7 +473,6 @@ requirejs [
             sm.resolveImmediately()
 
         clearSearchResults: () ->
-            @searchState.set 'input_query', null, clearing: true
             @searchResults.query = null
             if not @searchResults.isEmpty()
                 @_resetSearchResults()
@@ -608,8 +600,8 @@ requirejs [
                 selectUnit: =>
                     id = @appModels.selectedUnits.first().id
                     "unit/#{id}/"
-                search: =>
-                    query = @appModels.searchState?.get 'input_query'
+                search: (params) =>
+                    query = params[0]
                     "search/?q=#{query}"
                 selectPosition: =>
                     slug = @appModels.selectedPosition.value().slugifyAddress()
@@ -658,10 +650,10 @@ requirejs [
                 @controller.renderUnitsByServices parsedPath.filters.service
 
         _getFragment: (commandString, parameters) ->
-            @fragmentFunctions[commandString]?()
+            @fragmentFunctions[commandString]?(parameters)
 
         navigateByCommand: (commandString, parameters) ->
-            fragment = @_getFragment commandString
+            fragment = @_getFragment commandString, parameters
             if fragment?
                 @navigate fragment
                 p13n.trigger 'url'
@@ -676,6 +668,18 @@ requirejs [
                 opts?.afterMapInit?()
                 if isFrontPage() and not p13n.get('skip_tour') and not p13n.get('hide_tour')
                     tour.startTour()
+
+    app.addRegions
+        navigation: '#navigation-region'
+        personalisation: '#personalisation'
+        languageSelector: '#language-selector'
+        serviceCart: '#service-cart'
+        landingLogo: '#landing-logo'
+        logo: '#persistent-logo'
+        map: '#app-container'
+        tourStart: '#feature-tour-start'
+        feedbackFormContainer: '#feedback-form-container'
+        disclaimerContainer: '#disclaimers'
 
     app.addInitializer (opts) ->
 
@@ -800,30 +804,16 @@ requirejs [
 
         @listenTo app.vent, 'site-title:change', setSiteTitle
 
-        tourStartRegion = app.getRegion('tourStart')
-
         showButton = =>
             tourButtonView = new TourStartButton()
-            tourStartRegion.show tourButtonView
-            @listenToOnce tourButtonView, 'close', => tourStartRegion.reset()
+            app.getRegion('tourStart').show tourButtonView
+            @listenToOnce tourButtonView, 'close', => app.getRegion('tourStart').reset()
         if p13n.get('skip_tour')
             showButton()
         @listenTo p13n, 'tour-skipped', =>
             showButton()
 
         app.getRegion('disclaimerContainer').show new disclaimers.ServiceMapDisclaimersOverlayView
-
-    app.addRegions
-        navigation: '#navigation-region'
-        personalisation: '#personalisation'
-        languageSelector: '#language-selector'
-        serviceCart: '#service-cart'
-        landingLogo: '#landing-logo'
-        logo: '#persistent-logo'
-        map: '#app-container'
-        tourStart: '#feature-tour-start'
-        feedbackFormContainer: '#feedback-form-container'
-        disclaimerContainer: '#disclaimers'
 
     window.app = app
 
